@@ -10,6 +10,13 @@ Just execute:
 
 The library will be built as `lib\libasyncio.a`.
 
+## Example
+
+Try the `example.c` file. To compile execute:
+
+    gcc -o example example.c -pthread lib/libasyncio.a
+    ./example
+
 ## Make it better
 
 Sure! Just fork and send a pull request.
