@@ -2,6 +2,8 @@
 
 This is a small minimalist library that wraps the standard C I/O functions for non-blocking I/O, providing a high-performance alternative. This was done as an experiment to see if JS programming style can be brought to C programming. Well, the answer is yes!
 
+The detailed API can be found on the [wiki page](https://github.com/sankha93/async-io/wiki/API).
+
 ## Building
 
 Just execute:
