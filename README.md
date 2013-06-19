@@ -8,7 +8,7 @@ Just execute:
 
     build.sh
 
-The library will be built as `lib\libasyncio.a`.
+The library will be built as `lib/libasyncio.a`.
 
 ## Example
 
