@@ -23,7 +23,7 @@ void *__fopen_t__(fopen_struct *);
 void *__fscanf_t__(frw_struct *);
 void *__fprintf_t__(frw_struct *);
 
-pthread_t fopen_t(callback_file cb_file,  char *filename,  char *mode) {
+pthread_t fopen_t(callback_file cb_file, const char *filename,  const char *mode) {
     fopen_struct *args = (fopen_struct*) malloc(sizeof(fopen_struct));
     args -> filename = filename;
     args -> mode = mode;
@@ -56,7 +56,7 @@ void *__fclose_t__(fclose_struct *ptr) {
     free(args);
 }
 
-pthread_t fscanf_t(callback_int cb_int, FILE *stream,  char *format, ...) {
+pthread_t fscanf_t(callback_int cb_int, FILE *stream, const char *format, ...) {
     frw_struct *args = (frw_struct*) malloc(sizeof(frw_struct));
     va_list arguments;
     va_start(arguments, *format);
@@ -76,7 +76,7 @@ void *__fscanf_t__(frw_struct *ptr) {
     free(args);
 }
 
-pthread_t fprintf_t(callback_int cb_int, FILE *stream,  char *format, ...) {
+pthread_t fprintf_t(callback_int cb_int, FILE *stream,  const char *format, ...) {
     frw_struct *args = (frw_struct*) malloc(sizeof(frw_struct));
     va_list arguments;
     va_start(arguments, *format);
