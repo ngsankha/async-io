@@ -3,19 +3,19 @@
 typedef struct fopen_struct {
     char *filename;
     char *mode;
-    void *(*callback) (FILE *);
+    callback_file cb_file;
 } fopen_struct;
 
 typedef struct frw_struct {
     FILE *stream;
     char *format;
     va_list list;
-    void (*callback) (int);
+    callback_int cb_int;
 } frw_struct;
 
 typedef struct fclose_struct {
     FILE *stream;
-    void *(*callback) (int);
+    callback_int cb_int;
 } fclose_struct;
 
 void *__fclose_t__(fclose_struct *);
@@ -23,11 +23,11 @@ void *__fopen_t__(fopen_struct *);
 void *__fscanf_t__(frw_struct *);
 void *__fprintf_t__(frw_struct *);
 
-pthread_t fopen_t(void *(*callback)(FILE *),  char *filename,  char *mode) {
+pthread_t fopen_t(callback_file cb_file,  char *filename,  char *mode) {
     fopen_struct *args = (fopen_struct*) malloc(sizeof(fopen_struct));
     args -> filename = filename;
     args -> mode = mode;
-    args -> callback = callback;
+    args -> cb_file = cb_file;
     pthread_t thread;
     pthread_create(&thread, NULL, &__fopen_t__, args);
     return thread;
@@ -36,14 +36,14 @@ pthread_t fopen_t(void *(*callback)(FILE *),  char *filename,  char *mode) {
 void *__fopen_t__(fopen_struct *ptr) {
     fopen_struct *args = (fopen_struct *)ptr;
     FILE *result = fopen(args -> filename, args -> mode);
-    args -> callback(result);
+    args -> cb_file(result);
     free(args);
 }
 
-pthread_t fclose_t(void *(*callback)(int), FILE *stream) {
+pthread_t fclose_t(callback_int cb_int, FILE *stream) {
     fclose_struct *args = (fclose_struct*) malloc(sizeof(fclose_struct));
     args -> stream = stream;
-    args -> callback = callback;
+    args -> cb_int = cb_int;
     pthread_t thread;
     pthread_create(&thread, NULL, &__fclose_t__, args);
     return thread;
@@ -52,16 +52,16 @@ pthread_t fclose_t(void *(*callback)(int), FILE *stream) {
 void *__fclose_t__(fclose_struct *ptr) {
     fclose_struct *args = (fclose_struct *)ptr;
     int result = fclose(args -> stream);
-    args -> callback(result);
+    args -> cb_int(result);
     free(args);
 }
 
-pthread_t fscanf_t(void *(*callback)(int), FILE *stream,  char *format, ...) {
+pthread_t fscanf_t(callback_int cb_int, FILE *stream,  char *format, ...) {
     frw_struct *args = (frw_struct*) malloc(sizeof(frw_struct));
     va_list arguments;
     va_start(arguments, *format);
     args -> stream = stream;
-    args -> callback = callback;
+    args -> cb_int = cb_int;
     args -> list = arguments;
     args -> format = format;
     pthread_t thread;
@@ -72,16 +72,16 @@ pthread_t fscanf_t(void *(*callback)(int), FILE *stream,  char *format, ...) {
 void *__fscanf_t__(frw_struct *ptr) {
     frw_struct *args = (frw_struct *)ptr;
     int result = vfscanf(args -> stream, args -> format, args -> list);
-    args -> callback(result);
+    args -> cb_int(result);
     free(args);
 }
 
-pthread_t fprintf_t(void *(*callback)(int), FILE *stream,  char *format, ...) {
+pthread_t fprintf_t(callback_int cb_int, FILE *stream,  char *format, ...) {
     frw_struct *args = (frw_struct*) malloc(sizeof(frw_struct));
     va_list arguments;
     va_start(arguments, *format);
     args -> stream = stream;
-    args -> callback = callback;
+    args -> cb_int = cb_int;
     args -> list = arguments;
     args -> format = format;
     pthread_t thread;
@@ -92,7 +92,7 @@ pthread_t fprintf_t(void *(*callback)(int), FILE *stream,  char *format, ...) {
 void *__fprintf_t__(frw_struct *ptr) {
     frw_struct *args = (frw_struct *)ptr;
     int result = vfprintf(args -> stream, args -> format, args -> list);
-    args -> callback(result);
+    args -> cb_int(result);
     free(args);
 }
 

@@ -6,10 +6,17 @@
 #ifndef ASYNC_IO
 #define ASYNC_IO
 
-pthread_t fopen_t(void *(*callback)(FILE *),  char *,  char *);
-pthread_t fscanf_t(void *(*callback) (int), FILE *stream,  char *format, ...);
-pthread_t fprintf_t(void *(*callback) (int), FILE *stream,  char *format, ...);
-pthread_t fclose_t(void *(*callback) (int), FILE *stream);
+// using typedef for code simplification
+
+typedef void *(*callback_int)(int);
+typedef void *(*callback_file)(FILE *);
+
+pthread_t fopen_t(callback_file,  char *,  char *);
+pthread_t fscanf_t(callback_int, FILE *stream,  char *format, ...);
+pthread_t fprintf_t(callback_int, FILE *stream,  char *format, ...);
+pthread_t fclose_t(callback_int, FILE *stream);
+
+
 
 #endif
 
