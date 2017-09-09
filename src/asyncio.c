@@ -62,7 +62,8 @@ pthread_t fscanf_t(callback_int cb_int, FILE *stream, const char *format, ...) {
     va_start(arguments, *format);
     args -> stream = stream;
     args -> cb_int = cb_int;
-    args -> list = arguments;
+    va_copy(args -> list,arguments);
+    //args -> list = arguments;
     args -> format = format;
     pthread_t thread;
     pthread_create(&thread, NULL, &__fscanf_t__, args);
@@ -83,7 +84,8 @@ pthread_t fprintf_t(callback_int cb_int, FILE *stream,  const char *format, ...)
     va_start(arguments, *format);
     args -> stream = stream;
     args -> cb_int = cb_int;
-    args -> list = arguments;
+    va_copy(args -> list,arguments);
+    //args -> list = arguments;
     args -> format = format;
     pthread_t thread;
     pthread_create(&thread, NULL, &__fprintf_t__, args);
