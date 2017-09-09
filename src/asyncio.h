@@ -17,6 +17,5 @@ pthread_t fprintf_t(callback_int, FILE *stream,  const char *format, ...);
 pthread_t fclose_t(callback_int, FILE *stream);
 
 
-
 #endif
 

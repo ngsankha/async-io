@@ -66,6 +66,7 @@ pthread_t fscanf_t(callback_int cb_int, FILE *stream, const char *format, ...) {
     args -> format = format;
     pthread_t thread;
     pthread_create(&thread, NULL, &__fscanf_t__, args);
+    va_end(arguments);
     return thread;
 }
 
@@ -86,6 +87,7 @@ pthread_t fprintf_t(callback_int cb_int, FILE *stream,  const char *format, ...)
     args -> format = format;
     pthread_t thread;
     pthread_create(&thread, NULL, &__fprintf_t__, args);
+    va_end(arguments);
     return thread;
 }
 
